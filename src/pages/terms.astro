@@ -1,0 +1,27 @@
+---
+import Page from '../layouts/Page.astro';
+import { SITE } from '../data/site';
+---
+<Page title="Terms of use" kicker="Legal" description="The terms for using Equator Ledger, a free travel blog about Ecuador and the Galápagos published by Tourground." path="/terms/">
+  <p>By using {SITE.url.replace('https://', '')} (“the site”) you agree to these terms. If you do not agree, please do not use the site.</p>
+  <h2>1. Who we are</h2>
+  <p>The site is published by Tourground (“we”, “us”). Contact: <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.</p>
+  <h2>2. What the site is</h2>
+  <p>The site is a free travel blog. We do not sell travel, take bookings, handle payments or act as anyone’s agent. Any contract you make is between you and the company you book with.</p>
+  <h2>3. Information, not advice</h2>
+  <p>We write carefully and cite our sources, but the site gives general information, not legal, medical, financial or travel advice. Entry rules, health requirements, park fees and safety advice change. Check important facts with the official sources we cite, and with your operator, before you book or travel.</p>
+  <h2>4. No endorsement</h2>
+  <p>Mentioning a place, authority or company is not a guarantee. Paid content, if any, is labelled “Advertisement feature” and kept separate from editorial content. See our <a href="/disclosure/">disclosure</a>.</p>
+  <h2>5. Links to other sites</h2>
+  <p>We link to operators, official sources and other websites. We are not responsible for their content, availability or practices.</p>
+  <h2>6. Reusing our content</h2>
+  <p>The text, structure and design of the site belong to Tourground. You may quote short extracts and link to any page, including in search results and AI-generated answers, if you name Equator Ledger as the source and link to the page. You may not republish substantial parts of the site without written permission. Photographs belong to their photographers and are used under the licences listed on the <a href="/photo-credits/">photo credits</a> page.</p>
+  <h2>7. Acceptable use</h2>
+  <p>Do not use the site in a way that breaks the law or interferes with its operation. Automated access that respects our robots.txt and does not overload the site is welcome.</p>
+  <h2>8. Our responsibility to you</h2>
+  <p>The site is provided free of charge and “as is”. To the extent the law allows, we are not liable for loss arising from reliance on information on the site, from a company you choose to book with, or from the site being unavailable. Nothing in these terms limits liability that cannot be limited by law, or affects your statutory rights as a consumer.</p>
+  <h2>9. Changes</h2>
+  <p>We may update these terms. The date at the top of the page shows the latest version.</p>
+  <h2>10. Law</h2>
+  <p>These terms are governed by the law of the country in which the publisher is established. If you are a consumer, you also keep the protection of the mandatory rules of the country where you live, and you may bring a claim in the courts there.</p>
+</Page>

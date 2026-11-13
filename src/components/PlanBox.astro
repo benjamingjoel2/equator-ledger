@@ -1,0 +1,22 @@
+---
+import { OPERATORS, SITE } from '../data/site';
+import type { Post } from '../lib/posts';
+interface Props { plan: Post['data']['plan'] }
+const { plan } = Astro.props;
+const op = OPERATORS[plan.operator];
+---
+<aside class="plan" aria-labelledby="plan-heading">
+  <p class="plan-label">Plan this trip</p>
+  <h2 id="plan-heading">{plan.heading}</h2>
+  <p>{plan.text}</p>
+  <p><strong><a href={op.url}>{op.name}</a></strong>: {op.summary}</p>
+  <div class="actions">
+    {plan.links.map((l, i) => (
+      <a class:list={['button', i === 0 ? 'green' : 'secondary']} href={l.url}>{l.label}</a>
+    ))}
+  </div>
+  <p class="small">
+    Want to compare? <a href={SITE.directoryUrl}>Find other verified local operators in the Tourground directory</a>.
+    This box is not paid for; see our <a href="/disclosure/">disclosure</a> for how Tourground is connected to the operators it lists.
+  </p>
+</aside>

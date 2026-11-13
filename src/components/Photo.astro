@@ -1,0 +1,32 @@
+---
+import { Image } from 'astro:assets';
+import { PHOTOS, type PhotoKey } from '../data/photos';
+interface Props {
+  name: PhotoKey;
+  caption?: string;
+  priority?: boolean;
+  sizes?: string;
+  widths?: number[];
+  class?: string;
+}
+const { name, caption, priority = false, sizes = '(min-width: 72rem) 72rem, 100vw', widths = [480, 800, 1200, 1600, 2000], class: cls } = Astro.props;
+const p = PHOTOS[name];
+---
+<figure class:list={['figure', cls]}>
+  <Image
+    src={p.src}
+    alt={p.alt}
+    widths={widths}
+    sizes={sizes}
+    format="webp"
+    quality={72}
+    loading={priority ? 'eager' : 'lazy'}
+    fetchpriority={priority ? 'high' : 'auto'}
+    decoding={priority ? 'sync' : 'async'}
+    style={p.focus ? `object-position:${p.focus}` : undefined}
+  />
+  <figcaption class="credit">
+    {caption ? <>{caption} </> : <>{p.location}. </>}
+    Photo: <a href={p.sourceUrl} rel="noopener">{p.photographer}</a> on Unsplash.
+  </figcaption>
+</figure>

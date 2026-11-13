@@ -1,0 +1,20 @@
+---
+import Page from '../layouts/Page.astro';
+import { AUTHORS, SITE } from '../data/site';
+import { getPosts } from '../lib/posts';
+const posts = await getPosts();
+---
+<Page title="Authors" description="Who writes Equator Ledger, and how stories are researched, sourced and updated." path="/authors/">
+  {Object.values(AUTHORS).map((a) => (
+    <section id={a.id} aria-labelledby={`a-${a.id}`}>
+      <h2 id={`a-${a.id}`}>{a.name}</h2>
+      <p class="meta">{a.role}</p>
+      <p>{a.bio}</p>
+      <p>We sign stories as a desk rather than as named individuals. When we draw on the knowledge of a particular operator, we say so in the post and link to them in the “Plan this trip” box. Write to us at <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.</p>
+      <h3>Stories by {a.name}</h3>
+      <ul>
+        {posts.filter((p) => p.data.author === a.id).map((p) => <li><a href={`/posts/${p.id}/`}>{p.data.title}</a></li>)}
+      </ul>
+    </section>
+  ))}
+</Page>

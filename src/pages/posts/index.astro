@@ -1,0 +1,11 @@
+---
+import ListingPage from '../../components/ListingPage.astro';
+import { getPosts } from '../../lib/posts';
+const posts = await getPosts();
+---
+<ListingPage
+  title="All stories"
+  intro="Every Equator Ledger story, newest first: the Galápagos, the Andes, the Amazon and the coast, with practical detail and official sources."
+  posts={posts}
+  crumbs={[{ name: 'Home', path: '/' }, { name: 'All stories', path: '/posts/' }]}
+/>

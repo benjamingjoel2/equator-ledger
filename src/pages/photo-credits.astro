@@ -1,0 +1,27 @@
+---
+import { Image } from 'astro:assets';
+import Page from '../layouts/Page.astro';
+import { PHOTOS, type PhotoKey } from '../data/photos';
+const keys = (Object.keys(PHOTOS) as PhotoKey[]).sort((a, b) => PHOTOS[a].location.localeCompare(PHOTOS[b].location));
+---
+<Page title="Photo credits" description="Who took the photographs on Equator Ledger, where they were taken, the licence they are used under and a link to each original." path="/photo-credits/">
+  <p>The photographs on Equator Ledger come from Unsplash and are used under the <a href="https://unsplash.com/license" rel="noopener">Unsplash License</a>. Each one is listed below with its place, photographer and a link to the original. They are also credited wherever they appear.</p>
+  <table class="credits-table">
+    <caption class="visually-hidden">Photographs used on this site</caption>
+    <thead><tr><th scope="col">Photo</th><th scope="col">Place</th><th scope="col">Photographer</th><th scope="col">Licence and original</th></tr></thead>
+    <tbody>
+      {keys.map((k) => {
+        const p = PHOTOS[k];
+        return (
+          <tr>
+            <td><Image src={p.src} alt={p.alt} width={192} height={128} fit="cover" format="webp" quality={60} loading="lazy" /></td>
+            <td>{p.location}</td>
+            <td>{p.photographer}</td>
+            <td>{p.licence}. <a href={p.sourceUrl} rel="noopener">View original<span class="visually-hidden"> photo of {p.location} by {p.photographer}</span></a></td>
+          </tr>
+        );
+      })}
+    </tbody>
+  </table>
+  <p>If you are a photographer and believe a picture is credited wrongly, please email us and we will correct it.</p>
+</Page>

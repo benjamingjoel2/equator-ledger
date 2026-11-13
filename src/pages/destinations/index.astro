@@ -1,0 +1,44 @@
+---
+import Base from '../../layouts/Base.astro';
+import PostCard from '../../components/PostCard.astro';
+import { getPosts } from '../../lib/posts';
+import { DESTINATIONS, CATEGORIES, SITE, type DestinationKey } from '../../data/site';
+const posts = await getPosts();
+const keys = Object.keys(DESTINATIONS) as DestinationKey[];
+const intro = CATEGORIES.destinations.blurb;
+const page = { '@type': 'CollectionPage', name: 'Destinations', description: intro, url: `${SITE.url}/destinations/`, isPartOf: { '@id': `${SITE.url}/#website` } };
+---
+<Base title="Destinations" description={`Ecuador destinations: ${intro}`} crumbs={[{ name: 'Home', path: '/' }, { name: 'Destinations', path: '/destinations/' }]} ogPhoto="cotopaxi" extraGraph={[page]}>
+  <div class="wrap">
+    <header class="page-head">
+      <p class="kicker">Category</p>
+      <h1>Destinations</h1>
+      <p>Ecuador is small enough to cross in a day and varied enough to fill a month. Pick a region to see every story we have written about it.</p>
+      <nav aria-label="Destinations">
+        <ul class="dest-jump">
+          {keys.map((k) => <li><a href={`/destinations/${k}/`}>{DESTINATIONS[k].name}</a></li>)}
+        </ul>
+      </nav>
+    </header>
+    {keys.map((k) => {
+      const list = posts.filter((p) => p.data.destinations.includes(k)).slice(0, 3);
+      return (
+        <section class="section" aria-labelledby={`d-${k}`}>
+          <div class="section-head">
+            <h2 id={`d-${k}`}><a href={`/destinations/${k}/`}>{DESTINATIONS[k].name}</a></h2>
+            <a href={`/destinations/${k}/`}>All {DESTINATIONS[k].name} stories</a>
+          </div>
+          <p class="measure">{DESTINATIONS[k].blurb}</p>
+          <ul class="card-grid three">{list.map((p) => <li><PostCard post={p} /></li>)}</ul>
+        </section>
+      );
+    })}
+  </div>
+</Base>
+<style>
+  .dest-jump { list-style: none; padding: 0; margin: 1rem 0 0; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .dest-jump a { display: inline-block; padding: 0.45rem 0.8rem; border: 1px solid var(--line); border-radius: 999px; text-decoration: none; font-weight: 700; font-size: 0.95rem; min-height: 44px; line-height: 1.7; }
+  .dest-jump a:hover { background: var(--blue-soft); }
+  .section-head h2 a { color: var(--ink); text-decoration: none; }
+  .section-head h2 a:hover { color: var(--blue); text-decoration: underline; }
+</style>

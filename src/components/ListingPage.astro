@@ -1,0 +1,37 @@
+---
+import Base from '../layouts/Base.astro';
+import PostCard from './PostCard.astro';
+import Photo from './Photo.astro';
+import type { Post } from '../lib/posts';
+import type { Crumb } from '../lib/jsonld';
+import { SITE } from '../data/site';
+import type { PhotoKey } from '../data/photos';
+
+interface Props { title: string; intro: string; posts: Post[]; crumbs: Crumb[]; photo?: PhotoKey; kicker?: string }
+const { title, intro, posts, crumbs, photo, kicker } = Astro.props;
+const page = {
+  '@type': 'CollectionPage',
+  name: title,
+  description: intro,
+  url: new URL(Astro.url.pathname, SITE.url).href,
+  isPartOf: { '@id': `${SITE.url}/#website` },
+  hasPart: posts.map((p) => ({ '@type': 'BlogPosting', headline: p.data.title, url: new URL(`/posts/${p.id}/`, SITE.url).href })),
+};
+---
+<Base title={title} description={intro} crumbs={crumbs} ogPhoto={photo} extraGraph={[page]}>
+  <div class="wrap">
+    <header class="page-head">
+      {kicker && <p class="kicker">{kicker}</p>}
+      <h1>{title}</h1>
+      <p>{intro}</p>
+    </header>
+    <slot />
+    {posts.length > 0 ? (
+      <ul class="card-grid three">
+        {posts.map((p) => <li><PostCard post={p} /></li>)}
+      </ul>
+    ) : (
+      <p>No stories here yet. <a href="/posts/">Read all stories</a>.</p>
+    )}
+  </div>
+</Base>

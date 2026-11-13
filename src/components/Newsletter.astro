@@ -1,0 +1,26 @@
+---
+import { SITE } from '../data/site';
+---
+<section class="newsletter" aria-labelledby="newsletter-heading">
+  <h2 id="newsletter-heading">The Equator Ledger letter</h2>
+  <p>New stories and updates to entry rules, park fees and seasons, sent when there is something worth reading. No more than once a month.</p>
+  <form id="newsletter-form" action={`mailto:${SITE.email}?subject=Subscribe%20to%20the%20Equator%20Ledger%20letter`} method="post" enctype="text/plain">
+    <label for="newsletter-email">Your email address</label>
+    <input id="newsletter-email" name="email" type="email" autocomplete="email" required inputmode="email" />
+    <button class="button" type="submit">Sign up</button>
+  </form>
+  <p class="small">Signing up opens your email app with a message to {SITE.email}; send it and we will add you. Unsubscribe any time by replying “unsubscribe”. See our <a href="/privacy/">privacy policy</a>. Prefer a feed? Use our <a href="/rss.xml">RSS feed</a>.</p>
+</section>
+<script is:inline>
+  (function () {
+    var f = document.getElementById('newsletter-form');
+    if (!f) return;
+    f.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var v = document.getElementById('newsletter-email').value.trim();
+      if (!v) return;
+      var body = 'Please add ' + v + ' to the Equator Ledger letter.';
+      window.location.href = f.getAttribute('action') + '&body=' + encodeURIComponent(body);
+    });
+  })();
+</script>

@@ -1,0 +1,28 @@
+---
+import Page from '../layouts/Page.astro';
+import { SITE } from '../data/site';
+---
+<Page title="About Equator Ledger" description="What Equator Ledger is, who publishes it, and how its travel stories about Ecuador and the Galápagos are written and sourced. Published by Tourground." path="/about/">
+  <p class="lede">Equator Ledger is a travel blog for people planning a trip to Ecuador and the Galápagos: the Andes, the Amazon, the coast and the islands.</p>
+  <p>We write story-led, practical posts. Each one tries to give you a feel for a place and the detail you need to plan it: when to go, how long to stay, how things work on the ground and what to check before you book. Every post ends by pointing you to a verified local operator in the Tourground directory who can plan that trip with you.</p>
+
+  <h2>Who publishes it</h2>
+  <p><strong>Equator Ledger is published by Tourground</strong> (<a href={SITE.publisher.url}>tourground.com</a>). Tourground runs a directory of verified travel companies around the world. The relationship between Tourground and the operators we link to is set out in our <a href="/disclosure/">disclosure</a>.</p>
+
+  <h2>How we write</h2>
+  <ul>
+    <li><strong>Sourced.</strong> Facts about entry rules, health, park fees and safety link to the official source: the Galápagos National Park Directorate, government travel advice and public health agencies. Each post lists its sources at the end.</li>
+    <li><strong>Dated.</strong> Every post shows when it was published and when it was last updated. Rules and fees change, so check the sources before you travel.</li>
+    <li><strong>Nothing invented.</strong> We do not publish made-up reviews, quotes, prices or statistics. If we cannot source something, we leave it out or say plainly that you should confirm it.</li>
+    <li><strong>Labelled.</strong> If we ever publish paid content, it carries the label <span class="ad-label">Advertisement feature</span> and is kept visually separate from editorial stories.</li>
+  </ul>
+
+  <h2>What we do not do</h2>
+  <p>We do not sell trips, take bookings or handle payments. Any booking you make is between you and the operator.</p>
+
+  <h2>Photographs</h2>
+  <p>Our photographs are real images of the places we write about, credited under each picture and listed on the <a href="/photo-credits/">photo credits</a> page.</p>
+
+  <h2>Corrections and contact</h2>
+  <p>If something on this site is wrong or out of date, please tell us at <a href={`mailto:${SITE.email}`}>{SITE.email}</a> and we will check it and update the post, including its “last updated” date.</p>
+</Page>

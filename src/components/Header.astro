@@ -1,0 +1,25 @@
+---
+import { SITE } from '../data/site';
+const path = Astro.url.pathname;
+const nav = [
+  { href: '/destinations/', label: 'Destinations' },
+  { href: '/category/galapagos/', label: 'Galápagos' },
+  { href: '/category/wildlife/', label: 'Wildlife' },
+  { href: '/category/itineraries/', label: 'Itineraries' },
+  { href: '/category/food-culture/', label: 'Food & Culture' },
+  { href: '/category/travel-tips/', label: 'Travel Tips' },
+  { href: '/about/', label: 'About' },
+];
+---
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="/">{SITE.name}<small>Ecuador and the Galápagos, from the ground</small></a>
+    <nav class="site-nav" aria-label="Main">
+      <ul>
+        {nav.map((n) => (
+          <li><a href={n.href} aria-current={path.startsWith(n.href) ? 'page' : undefined}>{n.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+</header>

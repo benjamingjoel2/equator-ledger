@@ -1,0 +1,28 @@
+---
+import Page from '../layouts/Page.astro';
+import { SITE, OPERATORS } from '../data/site';
+---
+<Page
+  title="Disclosure"
+  description="Who publishes Equator Ledger, how Tourground earns money, how we choose the operators we link to, and how paid content is labelled."
+  path="/disclosure/"
+  sources={[
+    { title: 'Tourground: plans and directory', publisher: 'Tourground', url: 'https://tourground.com' },
+    { title: 'Qualify your outbound links to Google (rel="sponsored")', publisher: 'Google Search Central', url: 'https://developers.google.com/search/docs/crawling-indexing/qualify-outbound-links' },
+  ]}
+>
+  <h2>Publisher</h2>
+  <p>Equator Ledger is published by Tourground. Tourground runs a directory of verified travel companies and earns money from paid plans sold to those companies. Some travel brands are owned by Tourground’s founders.</p>
+
+  <h2>The “Plan this trip” box</h2>
+  <p>Every post ends with a “Plan this trip” box linking to a local operator listed in the Tourground directory. For Ecuador and the Galápagos that is currently <a href={OPERATORS.encantadas.url}>{OPERATORS.encantadas.name}</a>. Because the operators we link to are part of Tourground’s directory, Tourground may have a commercial relationship with them, such as a paid plan. No operator pays to be mentioned in a story or to appear in that box, and we also link to the full <a href={SITE.directoryUrl}>Tourground directory</a> so you can compare.</p>
+
+  <h2>Editorial independence</h2>
+  <p>Stories are written to be useful to travellers. Operators do not review or approve our stories before publication, and we do not publish reviews, ratings, rankings or testimonials.</p>
+
+  <h2>Paid content</h2>
+  <p>If we publish paid content, it will be labelled <span class="ad-label">Advertisement feature</span> at the top of the post and on every card that links to it, and kept visually separate from editorial stories. Links in paid content are marked <code>rel="sponsored"</code>. At the time of the last update, Equator Ledger carries no paid content.</p>
+
+  <h2>Links</h2>
+  <p>Links in a post’s sources list are citations. We do not use affiliate links.</p>
+</Page>

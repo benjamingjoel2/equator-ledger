@@ -1,0 +1,130 @@
+---
+import { Image, getImage } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import PostCard from '../components/PostCard.astro';
+import Newsletter from '../components/Newsletter.astro';
+import { PHOTOS } from '../data/photos';
+import { SITE, CATEGORIES, DESTINATIONS, type CategoryKey, type DestinationKey } from '../data/site';
+import { getPosts, postUrl, formatDate, readingMinutes } from '../lib/posts';
+
+const posts = await getPosts();
+const featured = posts.find((p) => p.data.featured) ?? posts[0];
+const startHere = posts.filter((p) => p.data.startHere).sort((a, b) => (a.data.startHere ?? 0) - (b.data.startHere ?? 0));
+const latest = posts.filter((p) => p.id !== featured.id).slice(0, 6);
+const fp = PHOTOS[featured.data.hero];
+const sizes = '(min-width: 72rem) 72rem, 100vw';
+const pre = await getImage({ src: fp.src, widths: [640, 960, 1280, 1600, 2000], format: 'webp', quality: 72 });
+const blog = {
+  '@type': 'Blog',
+  '@id': `${SITE.url}/#blog`,
+  name: SITE.name,
+  url: `${SITE.url}/`,
+  publisher: { '@id': `${SITE.url}/#publisher` },
+  blogPost: posts.map((p) => ({ '@type': 'BlogPosting', headline: p.data.title, url: new URL(postUrl(p), SITE.url).href, datePublished: p.data.published.toISOString().slice(0, 10) })),
+};
+---
+<Base
+  title={`${SITE.name}: ${SITE.tagline}`}
+  description={SITE.description}
+  crumbs={[{ name: 'Home', path: '/' }]}
+  ogPhoto={featured.data.hero}
+  extraGraph={[blog]}
+  preloadImage={{ srcset: pre.srcSet.attribute, sizes, type: 'image/webp' }}
+>
+  <h1 class="visually-hidden">{SITE.name}: {SITE.tagline}</h1>
+
+  <section class="wrap featured" aria-labelledby="featured-heading">
+    <a href={postUrl(featured)} class="featured-img" tabindex="-1" aria-hidden="true">
+      <Image src={fp.src} alt="" widths={[640, 960, 1280, 1600, 2000]} sizes={sizes} format="webp" quality={72} loading="eager" fetchpriority="high" style={fp.focus ? `object-position:${fp.focus}` : undefined} />
+    </a>
+    <p class="credit">{fp.location}. Photo: <a href={fp.sourceUrl} rel="noopener">{fp.photographer}</a> on Unsplash.</p>
+    <div class="featured-text">
+      <p class="kicker">Featured story · {CATEGORIES[featured.data.category].name}</p>
+      <h2 id="featured-heading"><a href={postUrl(featured)}>{featured.data.title}</a></h2>
+      <p class="featured-dek">{featured.data.description}</p>
+      <p class="meta"><span>{formatDate(featured.data.published)}</span><span>{readingMinutes(featured.body)} min read</span></p>
+    </div>
+  </section>
+
+  <section class="start-here" aria-labelledby="start-heading">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="start-heading">Start here</h2>
+        <p class="meta">New to Ecuador? Read these three first.</p>
+      </div>
+      <ol class="start-list">
+        {startHere.map((p, i) => (
+          <li>
+            <span class="num" aria-hidden="true">{i + 1}</span>
+            <div>
+              <h3><a href={postUrl(p)}>{p.data.title}</a></h3>
+              <p>{p.data.description}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="wrap section" aria-labelledby="latest-heading">
+    <div class="section-head">
+      <h2 id="latest-heading">Latest stories</h2>
+      <a href="/posts/">All stories</a>
+    </div>
+    <ul class="card-grid three">
+      {latest.map((p) => <li><PostCard post={p} /></li>)}
+    </ul>
+  </section>
+
+  <section class="wrap section" aria-labelledby="browse-heading">
+    <h2 id="browse-heading">Browse by topic</h2>
+    <div class="browse">
+      <div>
+        <h3><a href="/destinations/">Destinations</a></h3>
+        <ul class="link-list">
+          {(Object.keys(DESTINATIONS) as DestinationKey[]).map((k) => (
+            <li><a href={`/destinations/${k}/`}>{DESTINATIONS[k].name}</a><span>{DESTINATIONS[k].blurb}</span></li>
+          ))}
+        </ul>
+      </div>
+      <div>
+        <h3>Categories</h3>
+        <ul class="link-list">
+          {(Object.keys(CATEGORIES) as CategoryKey[]).filter((k) => k !== 'destinations').map((k) => (
+            <li><a href={`/category/${k}/`}>{CATEGORIES[k].name}</a><span>{CATEGORIES[k].blurb}</span></li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap section">
+    <Newsletter />
+  </section>
+</Base>
+
+<style>
+  .featured { padding-top: 1.5rem; padding-bottom: 2rem; }
+  .featured-img { display: block; }
+  .featured-img :global(img) { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: var(--radius); background: var(--paper-3); }
+  @media (max-width: 40rem) { .featured-img :global(img) { aspect-ratio: 4 / 3; } }
+  .featured-text { max-width: 46rem; margin-top: 1rem; }
+  .featured-text h2 { font-size: clamp(1.7rem, 1.3rem + 1.6vw, 2.3rem); }
+  .featured-text h2 a { color: var(--ink); text-decoration: none; }
+  .featured-text h2 a:hover { color: var(--blue); text-decoration: underline; }
+  .featured-dek { font-family: var(--serif); font-size: 1.2rem; color: var(--ink-2); }
+  .start-here { background: var(--blue-soft); padding: 2rem 0; border-top: 1px solid #c9dbe7; border-bottom: 1px solid #c9dbe7; }
+  .start-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 1.25rem; grid-template-columns: 1fr; }
+  @media (min-width: 56rem) { .start-list { grid-template-columns: repeat(3, 1fr); } }
+  .start-list li { display: flex; gap: 0.85rem; align-items: flex-start; }
+  .num { font-family: var(--serif); font-size: 1.6rem; line-height: 1; color: var(--blue); min-width: 1.4rem; }
+  .start-list h3 { font-size: 1.15rem; margin: 0 0 0.3rem; }
+  .start-list h3 a { color: var(--ink); }
+  .start-list p { margin: 0; color: var(--ink-2); font-size: 0.95rem; }
+  .browse { display: grid; gap: 2rem; grid-template-columns: 1fr; }
+  @media (min-width: 48rem) { .browse { grid-template-columns: 1fr 1fr; } }
+  .link-list { list-style: none; padding: 0; margin: 0; }
+  .link-list li { padding: 0.7rem 0; border-bottom: 1px solid var(--line); }
+  .link-list a { font-weight: 700; display: inline-block; margin-right: 0.5rem; }
+  .link-list span { display: block; color: var(--ink-2); font-size: 0.95rem; }
+</style>

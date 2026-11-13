@@ -1,0 +1,26 @@
+---
+import Page from '../layouts/Page.astro';
+import { SITE } from '../data/site';
+---
+<Page
+  title="Cookie policy"
+  kicker="Legal"
+  description="Equator Ledger does not set cookies or store anything on your device. How visits are counted without cookies."
+  path="/cookies/"
+  sources={[
+    { title: 'Directive 2002/58/EC (ePrivacy Directive), Article 5(3)', publisher: 'EUR-Lex', url: 'https://eur-lex.europa.eu/eli/dir/2002/58/oj' },
+    { title: 'Cookies and similar technologies', publisher: 'UK Information Commissioner’s Office', url: 'https://ico.org.uk/for-organisations/direct-marketing-and-privacy-and-electronic-communications/guide-to-pecr/cookies-and-similar-technologies/' },
+    { title: 'Vercel Web Analytics: privacy and compliance', publisher: 'Vercel', url: 'https://vercel.com/docs/analytics/privacy-policy' },
+  ]}
+>
+  <h2>The short version</h2>
+  <p>Equator Ledger does not set cookies and does not store anything on your device. There is no cookie banner because there is nothing to consent to.</p>
+  <h2>How visits are counted</h2>
+  <p>We count page views with Vercel Web Analytics. According to Vercel, it works without cookies: a visitor is identified by a hash created from the incoming request, which is discarded after 24 hours, and only aggregated statistics are reported to us. See our <a href="/privacy/">privacy policy</a>.</p>
+  <h2>Other storage</h2>
+  <p>This site does not use local storage, session storage, fingerprinting, advertising pixels or social media plugins. Fonts and images are served from our own domain.</p>
+  <h2>Sites we link to</h2>
+  <p>Operator websites, official sources and the Tourground directory have their own cookie policies, which apply when you visit them.</p>
+  <h2>If this changes</h2>
+  <p>If we ever add a cookie or similar technology that is not strictly necessary, we will ask for your consent first where the law requires it, and update this page. Questions: <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.</p>
+</Page>

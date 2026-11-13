@@ -1,0 +1,43 @@
+---
+import Page from '../layouts/Page.astro';
+import { SITE } from '../data/site';
+---
+<Page
+  title="Privacy policy"
+  kicker="Legal"
+  description="How Equator Ledger handles personal data: cookie-free visit statistics, hosting logs, and emails you send us, including newsletter sign-ups."
+  path="/privacy/"
+  sources={[
+    { title: 'Vercel Web Analytics: privacy and compliance', publisher: 'Vercel', url: 'https://vercel.com/docs/analytics/privacy-policy' },
+    { title: 'Regulation (EU) 2016/679 (GDPR)', publisher: 'EUR-Lex', url: 'https://eur-lex.europa.eu/eli/reg/2016/679/oj' },
+  ]}
+>
+  <p>This policy explains how personal data is handled when you use Equator Ledger ({SITE.url.replace('https://', '')}). The site is built to need very little personal data: there are no accounts, no comments, no advertising trackers and no cookies.</p>
+
+  <h2>Who is responsible</h2>
+  <p>The controller of personal data processed through this site is Tourground, the publisher of Equator Ledger. You can reach us at <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.</p>
+
+  <h2>What we process, why, and on what basis</h2>
+  <ol>
+    <li><strong>Visit statistics.</strong> We use Vercel Web Analytics to count page views in aggregate. According to Vercel, it does not use cookies, and visitors are identified by a hash created from the incoming request that is discarded after 24 hours. Data points can include the time, the page, the referring page, an approximate location, device type, operating system and browser. Legal basis: our legitimate interest in understanding which pages are read (GDPR and UK GDPR Article 6(1)(f)).</li>
+    <li><strong>Server logs.</strong> Our host, Vercel, processes technical request data (such as IP address, time, requested address and browser details) to deliver pages and protect the service. Legal basis: legitimate interest in running a secure website.</li>
+    <li><strong>Newsletter sign-ups and other emails.</strong> Our sign-up form opens your own email app; nothing is sent until you send the email yourself. When you write to us, we process your email address, any name you give and your message, to add you to the newsletter list or reply to you. Legal basis: your consent for the newsletter (withdraw it any time by replying “unsubscribe”), and our legitimate interest in answering other messages.</li>
+  </ol>
+  <p>We do not sell personal data, share it for behavioural advertising, or use it for automated decision-making.</p>
+
+  <h2>Who receives it</h2>
+  <ul>
+    <li>Vercel Inc. (hosting and analytics), as our processor.</li>
+    <li>Our email provider, as our processor, for messages you send us.</li>
+  </ul>
+  <p>Vercel is based in the United States. Where personal data is transferred outside the UK or EU, we rely on the safeguards the law provides, such as an adequacy decision or standard contractual clauses.</p>
+
+  <h2>How long we keep it</h2>
+  <p>Analytics are kept in aggregate. Emails are kept for as long as needed to deal with them; newsletter addresses are kept until you unsubscribe.</p>
+
+  <h2>Your rights</h2>
+  <p>Depending on where you live, you can ask for access to, correction or deletion of your personal data, object to processing, or withdraw consent. Email us to do so. You can also complain to your data protection authority, such as the UK Information Commissioner’s Office.</p>
+
+  <h2>Changes</h2>
+  <p>We will update this page if anything changes and show the new date at the top.</p>
+</Page>

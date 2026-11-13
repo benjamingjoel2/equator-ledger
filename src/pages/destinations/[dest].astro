@@ -1,0 +1,15 @@
+---
+import ListingPage from '../../components/ListingPage.astro';
+import { getPosts, type Post } from '../../lib/posts';
+import { DESTINATIONS, type DestinationKey } from '../../data/site';
+import type { PhotoKey } from '../../data/photos';
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return (Object.keys(DESTINATIONS) as DestinationKey[]).map((k) => ({ params: { dest: k }, props: { key: k, posts: posts.filter((p) => p.data.destinations.includes(k)) } }));
+}
+interface Props { key: DestinationKey; posts: Post[] }
+const { key, posts } = Astro.props;
+const d = DESTINATIONS[key];
+const photos: Record<DestinationKey, PhotoKey> = { quito: 'quito', andes: 'cotopaxi', cuenca: 'cuenca', amazon: 'cuyabeno', coast: 'montanita', galapagos: 'bartolome-bay' };
+---
+<ListingPage title={d.name} intro={d.blurb} posts={posts} kicker="Destination" photo={photos[key]} crumbs={[{ name: 'Home', path: '/' }, { name: 'Destinations', path: '/destinations/' }, { name: d.name, path: `/destinations/${key}/` }]} />

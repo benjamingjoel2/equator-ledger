@@ -1,0 +1,100 @@
+---
+import '@fontsource/newsreader/latin-600.css';
+import '@fontsource/newsreader/latin-600-italic.css';
+import '@fontsource/public-sans/latin-400.css';
+import '@fontsource/public-sans/latin-400-italic.css';
+import '@fontsource/public-sans/latin-700.css';
+import '../styles/global.css';
+import newsreader600 from '@fontsource/newsreader/files/newsreader-latin-600-normal.woff2?url';
+import publicSans400 from '@fontsource/public-sans/files/public-sans-latin-400-normal.woff2?url';
+import { getImage } from 'astro:assets';
+import { SITE } from '../data/site';
+import { PHOTOS, type PhotoKey } from '../data/photos';
+import { baseGraph, breadcrumbList, type Crumb } from '../lib/jsonld';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  crumbs: Crumb[];
+  ogPhoto?: PhotoKey;
+  ogType?: 'website' | 'article';
+  extraGraph?: object[];
+  noindex?: boolean;
+  hideCrumbs?: boolean;
+  preloadImage?: { srcset: string; sizes: string; type: string };
+  publishedTime?: string;
+  modifiedTime?: string;
+}
+
+const {
+  title,
+  description,
+  crumbs,
+  ogPhoto = 'bartolome-bay',
+  ogType = 'website',
+  extraGraph = [],
+  noindex = false,
+  hideCrumbs = false,
+  preloadImage,
+  publishedTime,
+  modifiedTime,
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, SITE.url).href;
+const fullTitle = crumbs.length <= 1 ? title : `${title} | ${SITE.name}`;
+const og = await getImage({ src: PHOTOS[ogPhoto].src, width: 1200, height: 630, fit: 'cover', format: 'jpg', quality: 78 });
+const ogUrl = new URL(og.src, SITE.url).href;
+
+const graph = { '@context': 'https://schema.org', '@graph': [...baseGraph(), breadcrumbList(crumbs), ...extraGraph] };
+---
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <link rel="canonical" href={canonical} />
+    <link rel="preload" href={newsreader600} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={publicSans400} as="font" type="font/woff2" crossorigin />
+    {preloadImage && (
+      <link rel="preload" as="image" type={preloadImage.type} imagesrcset={preloadImage.srcset} imagesizes={preloadImage.sizes} fetchpriority="high" />
+    )}
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={SITE.locale} />
+    <meta property="og:image" content={ogUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={PHOTOS[ogPhoto].alt} />
+    {publishedTime && <meta property="article:published_time" content={publishedTime} />}
+    {modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#fbf8f2" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="alternate" type="application/rss+xml" title={`${SITE.name} RSS feed`} href="/rss.xml" />
+    <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
+    <link rel="alternate" type="text/plain" title="llms.txt" href="/llms.txt" />
+    <script type="application/ld+json" set:html={JSON.stringify(graph)} />
+    <script is:inline>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments)};</script>
+    <script is:inline defer src="/_vercel/insights/script.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <Header />
+    <main id="main" tabindex="-1">
+      {!hideCrumbs && crumbs.length > 1 && (
+        <div class="wrap"><Breadcrumbs crumbs={crumbs} /></div>
+      )}
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

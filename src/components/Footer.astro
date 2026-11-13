@@ -1,0 +1,45 @@
+---
+import { SITE, CATEGORIES, type CategoryKey } from '../data/site';
+const year = new Date().getUTCFullYear();
+---
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <h2>{SITE.name}</h2>
+        <p>Story-led, practical travel writing for planning a trip to Ecuador and the Galápagos. Every post lists its sources and shows when it was last updated.</p>
+        <p><a href={`mailto:${SITE.email}`}>{SITE.email}</a></p>
+      </div>
+      <div>
+        <h2>Read</h2>
+        <ul>
+          {(Object.keys(CATEGORIES) as CategoryKey[]).map((k) => (
+            <li><a href={k === 'destinations' ? '/destinations/' : `/category/${k}/`}>{CATEGORIES[k].name}</a></li>
+          ))}
+          <li><a href="/posts/">All stories</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>About</h2>
+        <ul>
+          <li><a href="/about/">About</a></li>
+          <li><a href="/authors/">Authors</a></li>
+          <li><a href="/disclosure/">Disclosure</a></li>
+          <li><a href="/photo-credits/">Photo credits</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Legal and feeds</h2>
+        <ul>
+          <li><a href="/privacy/">Privacy</a></li>
+          <li><a href="/cookies/">Cookies</a></li>
+          <li><a href="/terms/">Terms</a></li>
+          <li><a href="/rss.xml">RSS feed</a></li>
+          <li><a href="/sitemap.xml">Sitemap</a></li>
+          <li><a href="/llms.txt">llms.txt</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="publisher">Published by <a href={SITE.publisher.url}>Tourground</a>. © {year} Tourground.</p>
+  </div>
+</footer>

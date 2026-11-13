@@ -1,0 +1,19 @@
+---
+import { Image } from 'astro:assets';
+import { PHOTOS } from '../data/photos';
+import { CATEGORIES } from '../data/site';
+import { postUrl, formatDate, readingMinutes, type Post } from '../lib/posts';
+interface Props { post: Post; headingLevel?: 'h2' | 'h3'; sizes?: string }
+const { post, headingLevel = 'h3', sizes = '(min-width: 64rem) 22rem, (min-width: 40rem) 45vw, 100vw' } = Astro.props;
+const p = PHOTOS[post.data.hero];
+const H = headingLevel;
+---
+<article class="card">
+  <Image src={p.src} alt="" widths={[400, 640, 900]} sizes={sizes} format="webp" quality={68} loading="lazy" style={p.focus ? `object-position:${p.focus}` : undefined} />
+  <div>
+    <p class="kicker">{post.data.sponsored ? <span class="ad-label">Advertisement feature</span> : CATEGORIES[post.data.category].name}</p>
+    <H><a href={postUrl(post)}>{post.data.title}</a></H>
+    <p>{post.data.description}</p>
+    <p class="meta"><span>{formatDate(post.data.published)}</span><span>{readingMinutes(post.body)} min read</span></p>
+  </div>
+</article>

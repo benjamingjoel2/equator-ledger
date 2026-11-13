@@ -1,0 +1,18 @@
+---
+import ListingPage from '../../components/ListingPage.astro';
+import { getPosts, type Post } from '../../lib/posts';
+import { CATEGORIES, type CategoryKey } from '../../data/site';
+import type { PhotoKey } from '../../data/photos';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return (Object.keys(CATEGORIES) as CategoryKey[])
+    .filter((k) => k !== 'destinations')
+    .map((k) => ({ params: { cat: k }, props: { key: k, posts: posts.filter((p) => p.data.category === k || p.data.alsoIn.includes(k)) } }));
+}
+interface Props { key: CategoryKey; posts: Post[] }
+const { key, posts } = Astro.props;
+const c = CATEGORIES[key];
+const photos: Partial<Record<CategoryKey, PhotoKey>> = { galapagos: 'bartolome-bay', wildlife: 'blue-footed-booby', itineraries: 'quilotoa', 'food-culture': 'cuenca', 'travel-tips': 'san-cristobal-pelican' };
+---
+<ListingPage title={c.name} intro={c.blurb} posts={posts} kicker="Category" photo={photos[key]} crumbs={[{ name: 'Home', path: '/' }, { name: c.name, path: `/category/${key}/` }]} />

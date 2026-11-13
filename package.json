@@ -1,0 +1,25 @@
+{
+  "name": "equator-ledger",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Equator Ledger: travel stories and practical guides for Ecuador and the Galápagos. Published by Tourground.",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check:content": "node scripts/check-content.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "4.3.14",
+    "@astrojs/rss": "4.0.19",
+    "@astrojs/sitemap": "3.7.4",
+    "@fontsource/newsreader": "^5.2.0",
+    "@fontsource/public-sans": "^5.2.0",
+    "astro": "5.18.2",
+    "sharp": "0.34.5"
+  }
+}
